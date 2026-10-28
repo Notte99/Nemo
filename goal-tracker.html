@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ติดตามเป้าหมายรายเดือน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d1424; --panel:#162039; --line:#2b3959; --text:#ede7d7; --muted:#8e96ae;
+  --amber:#f2b33d; --teal:#4fd1c0; --rose:#ef7090; --sky:#73a9ff;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --ink:#f7f4ec; --panel:#fffdf7; --line:#d9d2bf; --text:#22201a; --muted:#7a7463;
+    --amber:#e09a12; --teal:#1fa892; --rose:#d24d70; --sky:#3b72d6;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"]{
+  --ink:#f7f4ec; --panel:#fffdf7; --line:#d9d2bf; --text:#22201a; --muted:#7a7463;
+  --amber:#e09a12; --teal:#1fa892; --rose:#d24d70; --sky:#3b72d6;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--text);font-family:Sarabun,system-ui,sans-serif}
+body{padding:env(safe-area-inset-top,0px) 14px env(safe-area-inset-bottom,0px);min-height:100%}
+main{max-width:1100px;margin:0 auto;padding:18px 0 40px}
+
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+h1{margin:0;font-size:26px;font-weight:700;line-height:1.2}
+select,input{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat span{display:block;font-size:13px;color:var(--muted)}
+.stat strong{display:block;font-size:30px;font-weight:700;margin-top:4px;line-height:1.1}
+.stat.hero strong{color:var(--amber)}
+.bar{height:6px;border-radius:4px;background:var(--line);margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--amber);transition:width .3s}
+
+.wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;-webkit-overflow-scrolling:touch}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
+th,td{padding:0;text-align:center;font-weight:400}
+thead th{font-size:13px;color:var(--muted);padding:6px 3px;white-space:nowrap}
+.wk{font-weight:700;border-top:3px solid;padding-top:8px}
+.wk.c0{color:var(--amber);border-color:var(--amber)}
+.wk.c1{color:var(--teal);border-color:var(--teal)}
+.wk.c2{color:var(--rose);border-color:var(--rose)}
+.wk.c3{color:var(--sky);border-color:var(--sky)}
+.dayh b{display:block;color:var(--text);font-size:14px;font-weight:600}
+.corner,.hname{position:sticky;left:0;z-index:2;background:var(--panel);text-align:left}
+.corner{padding:8px 12px;font-size:13px;color:var(--muted)}
+.hname{min-width:210px;padding:6px 8px;border-bottom:1px solid var(--line)}
+.hname input{width:calc(100% - 34px);padding:6px 8px;font-size:15px}
+.rm{width:28px;height:28px;margin-left:4px;border:none;background:none;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;border-radius:6px}
+.rm:hover{color:var(--rose)}
+td{border-bottom:1px solid var(--line);padding:6px 3px}
+td.sumc,th.sumh{position:sticky;right:0;background:var(--panel);min-width:62px;font-size:15px;font-weight:600;border-left:1px solid var(--line)}
+th.sumh{font-size:13px;color:var(--muted);font-weight:400}
+.cell{display:grid;place-items:center;width:28px;height:28px;margin:0 auto;border-radius:7px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:15px;cursor:pointer;padding:0}
+.cell:hover{border-color:var(--muted)}
+.cell.on::after{content:"✓"}
+.w0 .cell.on{background:var(--amber);border-color:var(--amber)}
+.w1 .cell.on{background:var(--teal);border-color:var(--teal)}
+.w2 .cell.on{background:var(--rose);border-color:var(--rose)}
+.w3 .cell.on{background:var(--sky);border-color:var(--sky)}
+tfoot td{font-size:13px;color:var(--muted);padding:8px 3px}
+tfoot .lbl{text-align:left;padding:8px 12px;position:sticky;left:0;background:var(--panel)}
+tfoot .pc{color:var(--text);font-weight:600}
+
+.chart{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.chart h2{margin:0 0 8px;font-size:15px;font-weight:600}
+.chart svg{width:100%;height:110px;display:block;overflow:visible}
+.chart .axis{stroke:var(--line);stroke-width:1}
+.chart .lab{fill:var(--muted);font-size:10px;font-family:Sarabun,sans-serif}
+.chart polyline{fill:none;stroke:var(--teal);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.chart .dot{fill:var(--teal)}
+
+.actions{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;color:var(--ink);background:var(--amber);border:none;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer}
+.btn.ghost{background:none;color:var(--text);border:1px solid var(--line)}
+.hint{font-size:13px;color:var(--muted)}
+
+@media (max-width:560px){
+  .summary{grid-template-columns:1fr 1fr}
+  .stat.hero{grid-column:1/-1}
+  .stat strong{font-size:24px}
+  .hname{min-width:160px}
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>ติดตามเป้าหมาย</h1>
+    <select id="month" aria-label="เลือกเดือน"></select>
+  </header>
+
+  <section class="summary" aria-label="สรุป">
+    <div class="stat"><span>จำนวนเป้าหมาย</span><strong id="goalCount">0</strong></div>
+    <div class="stat"><span>วันที่ทำครบทุกข้อ</span><strong id="fullDays">0</strong></div>
+    <div class="stat hero"><span>ความคืบหน้าเดือนนี้</span><strong id="overall">0%</strong>
+      <div class="bar"><i id="overallBar"></i></div></div>
+  </section>
+
+  <div class="wrap">
+    <table>
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+      <tfoot id="tfoot"></tfoot>
+    </table>
+  </div>
+
+  <section class="chart">
+    <h2>ความคืบหน้ารายวัน</h2>
+    <svg id="chart" viewBox="0 0 320 110" preserveAspectRatio="none" role="img" aria-label="กราฟความคืบหน้ารายวัน"></svg>
+  </section>
+
+  <div class="actions">
+    <button class="btn" id="add">+ เพิ่มเป้าหมาย</button>
+    <span class="hint">แตะช่องเพื่อทำเครื่องหมาย ข้อมูลถูกบันทึกในเบราว์เซอร์นี้</span>
+  </div>
+</main>
+
+<script>
+const TH_MONTHS=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const TH_DAYS=["อา","จ","อ","พ","พฤ","ศ","ส"];
+const DEFAULT_HABITS=["ตื่นเช้า","วางแผนประจำวัน","ออกกำลังกาย","ทำรายรับรายจ่าย","กินข้าวไม่ดูทรศ","เรียนรู้สิ่งใหม่ๆ","อ่านหนังสือ","ทำโปรเจค","งดแอลกอฮอล์","ดื่มน้ำ 2 ลิตร"];
+const YEAR=2026, KEY="goal-tracker-v1";
+
+let state=null;
+try{ state=JSON.parse(localStorage.getItem(KEY)); }catch(e){}
+if(!state||!Array.isArray(state.habits)||typeof state.checks!=="object"){
+  state={month:new Date().getMonth(),habits:DEFAULT_HABITS.slice(),checks:{}};
+}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+
+const $=s=>document.querySelector(s);
+const daysIn=m=>new Date(YEAR,m+1,0).getDate();
+const weekdayOf=(m,d)=>new Date(YEAR,m,d).getDay();
+const pct=(a,b)=>b?Math.round(a/b*100):0;
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const key=(i,d)=>state.month+"-"+i+"-"+d;
+const isOn=(i,d)=>!!state.checks[key(i,d)];
+
+function buildMonthSelect(){
+  $("#month").innerHTML=TH_MONTHS.map((n,i)=>`<option value="${i}">${n} ${YEAR}</option>`).join("");
+}
+
+function render(){
+  const m=state.month, n=daysIn(m), H=state.habits, off=weekdayOf(m,1);
+  $("#month").value=m;
+
+  // weeks (Sunday-start calendar weeks)
+  const weeks=[];
+  for(let d=1;d<=n;d++){ const w=Math.floor((d-1+off)/7); (weeks[w]=weeks[w]||[]).push(d); }
+
+  let h1=`<tr><th class="corner" rowspan="2">เป้าหมาย</th>`;
+  weeks.forEach((ds,w)=>{ h1+=`<th colspan="${ds.length}" class="wk c${w%4}">สัปดาห์ที่ ${w+1}</th>`; });
+  h1+=`<th class="sumh" rowspan="2">รวม</th></tr>`;
+  let h2="<tr>";
+  for(let d=1;d<=n;d++) h2+=`<th class="dayh">${TH_DAYS[weekdayOf(m,d)]}<b>${d}</b></th>`;
+  h2+="</tr>";
+  $("#thead").innerHTML=h1+h2;
+
+  // habit rows
+  let body="";
+  H.forEach((name,i)=>{
+    let row=`<tr><th class="hname"><input aria-label="ชื่อเป้าหมาย" value="${esc(name)}" data-i="${i}"><button class="rm" data-rm="${i}" aria-label="ลบ ${esc(name)}">×</button></th>`;
+    let done=0;
+    for(let d=1;d<=n;d++){
+      const w=Math.floor((d-1+off)/7)%4, on=isOn(i,d); if(on) done++;
+      row+=`<td class="w${w}"><button class="cell${on?" on":""}" data-i="${i}" data-d="${d}" aria-pressed="${on}" aria-label="${esc(name)} วันที่ ${d}"></button></td>`;
+    }
+    row+=`<td class="sumc">${pct(done,n)}%</td></tr>`;
+    body+=row;
+  });
+  if(!H.length) body=`<tr><td colspan="${n+2}" style="padding:20px;color:var(--muted);text-align:left">ยังไม่มีเป้าหมาย กดเพิ่มเป้าหมายด้านล่างเพื่อเริ่ม</td></tr>`;
+  $("#tbody").innerHTML=body;
+
+  // per-day totals
+  const dayDone=[];
+  let foot=`<tr><td class="lbl">ทำได้ต่อวัน</td>`;
+  for(let d=1;d<=n;d++){
+    const c=H.reduce((a,_,i)=>a+(isOn(i,d)?1:0),0);
+    dayDone[d]=c;
+    const w=Math.floor((d-1+off)/7)%4;
+    foot+=`<td class="w${w}"><span class="pc">${pct(c,H.length)}</span></td>`;
+  }
+  foot+=`<td class="sumc"></td></tr>`;
+  $("#tfoot").innerHTML=foot;
+
+  // summary
+  const total=H.length*n;
+  let doneAll=0, fullDays=0;
+  for(let d=1;d<=n;d++){ doneAll+=dayDone[d]; if(H.length&&dayDone[d]===H.length) fullDays++; }
+  const overall=pct(doneAll,total);
+  $("#goalCount").textContent=H.length;
+  $("#fullDays").textContent=fullDays;
+  $("#overall").textContent=overall+"%";
+  $("#overallBar").style.width=overall+"%";
+
+  // chart
+  const W=320,Hh=110,pad=8;
+  let pts=[];
+  for(let d=1;d<=n;d++){
+    const x=pad+(d-1)/Math.max(n-1,1)*(W-pad*2);
+    const y=Hh-pad-(pct(dayDone[d],H.length)/100)*(Hh-pad*2);
+    pts.push([x,y]);
+  }
+  const grid=[0,50,100].map(v=>{const y=Hh-pad-(v/100)*(Hh-pad*2);
+    return `<line class="axis" x1="0" x2="${W}" y1="${y}" y2="${y}"/><text class="lab" x="2" y="${y-2}">${v}%</text>`;}).join("");
+  $("#chart").innerHTML=grid+`<polyline points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" ")}"/>`;
+}
+
+// toggle a check
+$("#tbody").addEventListener("click",e=>{
+  const rm=e.target.closest(".rm");
+  if(rm){
+    const r=+rm.dataset.rm;
+    state.habits.splice(r,1);
+    const next={};
+    for(const k in state.checks){
+      const [mo,i,d]=k.split("-").map(Number);
+      if(mo!==state.month){ next[k]=state.checks[k]; continue; }
+      if(i===r) continue;
+      next[mo+"-"+(i>r?i-1:i)+"-"+d]=state.checks[k];
+    }
+    state.checks=next; save(); render(); return;
+  }
+  const c=e.target.closest(".cell");
+  if(!c) return;
+  const i=+c.dataset.i, d=+c.dataset.d, k=key(i,d);
+  if(state.checks[k]) delete state.checks[k]; else state.checks[k]=true;
+  save(); render();
+  const again=document.querySelector(`.cell[data-i="${i}"][data-d="${d}"]`);
+  if(again) again.focus();
+});
+
+// rename a habit (no re-render so typing keeps focus)
+$("#tbody").addEventListener("change",e=>{
+  const inp=e.target.closest("input");
+  if(!inp) return;
+  state.habits[+inp.dataset.i]=inp.value.trim()||"เป้าหมายใหม่";
+  save();
+});
+
+$("#add").addEventListener("click",()=>{
+  state.habits.push("เป้าหมายใหม่"); save(); render();
+  const inputs=document.querySelectorAll(".hname input");
+  if(inputs.length) inputs[inputs.length-1].select();
+});
+
+$("#month").addEventListener("change",e=>{
+  state.month=+e.target.value; save(); render();
+});
+
+buildMonthSelect();
+render();
+</script>
+</body>
+</html>
