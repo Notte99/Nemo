@@ -196,19 +196,6 @@ tfoot .lbl{width:150px;font-size:12px}
 const TH_M=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
 const TH_D=["อา","จ","อ","พ","พฤ","ศ","ส"];
 const KEY="goal-tracker-v2";
-const DEF=[
-  {id:"h1",name:"ตื่นเช้า",type:"check"},
-  {id:"h2",name:"วางแผนประจำวัน",type:"check"},
-  {id:"h3",name:"ออกกำลังกาย",type:"check"},
-  {id:"h4",name:"ทำรายรับรายจ่าย",type:"check"},
-  {id:"h5",name:"กินข้าวไม่ดูทรศ",type:"check"},
-  {id:"h6",name:"เรียนรู้สิ่งใหม่ๆ",type:"check"},
-  {id:"h7",name:"อ่านหนังสือ",type:"check"},
-  {id:"h8",name:"ทำโปรเจค",type:"check"},
-  {id:"h9",name:"งดแอลกอฮอล์",type:"check"},
-  {id:"h10",name:"ดื่มน้ำ",type:"num",target:2,unit:"ลิตร"}
-];
-
 let S=null;
 try{S=JSON.parse(localStorage.getItem(KEY));}catch(e){}
 if(!S||!Array.isArray(S.habits)){
