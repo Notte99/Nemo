@@ -3,109 +3,165 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ติดตามเป้าหมายรายเดือน</title>
+<title>ติดตามเป้าหมาย</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --ink:#0d1424; --panel:#162039; --line:#2b3959; --text:#ede7d7; --muted:#8e96ae;
-  --amber:#f2b33d; --teal:#4fd1c0; --rose:#ef7090; --sky:#73a9ff;
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: light){
-  :root:not([data-theme="dark"]){
-    --ink:#f7f4ec; --panel:#fffdf7; --line:#d9d2bf; --text:#22201a; --muted:#7a7463;
-    --amber:#e09a12; --teal:#1fa892; --rose:#d24d70; --sky:#3b72d6;
-    color-scheme: light;
-  }
-}
-:root[data-theme="light"]{
-  --ink:#f7f4ec; --panel:#fffdf7; --line:#d9d2bf; --text:#22201a; --muted:#7a7463;
-  --amber:#e09a12; --teal:#1fa892; --rose:#d24d70; --sky:#3b72d6;
-  color-scheme: light;
-}
+:root{--ink:#0a1128;--panel:#111b38;--line:#2a3b66;--text:#eef1fb;--muted:#8d98bb;--amber:#9d7dff;--teal:#4fe3d3;--rose:#ff6aa8;--sky:#6aa9ff;color-scheme:dark}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--ink);color:var(--text);font-family:Sarabun,system-ui,sans-serif}
-body{padding:env(safe-area-inset-top,0px) 14px env(safe-area-inset-bottom,0px);min-height:100%}
-main{max-width:1100px;margin:0 auto;padding:18px 0 40px}
-
-header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-h1{margin:0;font-size:26px;font-weight:700;line-height:1.2}
-select,input{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
-select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
-
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
-.stat span{display:block;font-size:13px;color:var(--muted)}
-.stat strong{display:block;font-size:30px;font-weight:700;margin-top:4px;line-height:1.1}
-.stat.hero strong{color:var(--amber)}
-.bar{height:6px;border-radius:4px;background:var(--line);margin-top:10px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--amber);transition:width .3s}
-
+body{margin:0;background:var(--ink);color:var(--text);font-family:Sarabun,system-ui,sans-serif;padding:env(safe-area-inset-top,0px) 12px env(safe-area-inset-bottom,0px)}
+main{max-width:1100px;margin:0 auto;padding:16px 0 40px}
+h1{font-size:24px;margin:0;line-height:1.2}
+h2{font-size:16px;margin:0 0 10px}
+button,select,input{font:inherit;color:var(--text)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.nav{display:flex;align-items:center;gap:8px}
+.nav span{min-width:150px;text-align:center;font-weight:600}
+.btn{background:var(--amber);color:var(--ink);border:none;border-radius:8px;padding:8px 12px;font-weight:600;cursor:pointer}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--text)}
+.t{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-width:0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.card small{color:var(--muted);font-size:13px;display:block}
+.card strong{font-size:26px;line-height:1.2}
+.card.hero strong{color:var(--amber)}
+.bar{height:6px;background:var(--line);border-radius:4px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--amber)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:14px}
 .wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;-webkit-overflow-scrolling:touch}
 table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
 th,td{padding:0;text-align:center;font-weight:400}
-thead th{font-size:13px;color:var(--muted);padding:6px 3px;white-space:nowrap}
-.wk{font-weight:700;border-top:3px solid;padding-top:8px}
-.wk.c0{color:var(--amber);border-color:var(--amber)}
-.wk.c1{color:var(--teal);border-color:var(--teal)}
-.wk.c2{color:var(--rose);border-color:var(--rose)}
-.wk.c3{color:var(--sky);border-color:var(--sky)}
-.dayh b{display:block;color:var(--text);font-size:14px;font-weight:600}
+thead th{font-size:12px;color:var(--muted);padding:6px 3px;white-space:nowrap}
+.wk{font-weight:700;border-top:3px solid;padding-top:7px}
+.c0{color:var(--amber);border-color:var(--amber)}.c1{color:var(--teal);border-color:var(--teal)}.c2{color:var(--rose);border-color:var(--rose)}.c3{color:var(--sky);border-color:var(--sky)}
+.dayh b{display:block;color:var(--text);font-size:13px;font-weight:600}
+.dayh.today b{color:var(--amber)}
 .corner,.hname{position:sticky;left:0;z-index:2;background:var(--panel);text-align:left}
-.corner{padding:8px 12px;font-size:13px;color:var(--muted)}
-.hname{min-width:210px;padding:6px 8px;border-bottom:1px solid var(--line)}
-.hname input{width:calc(100% - 34px);padding:6px 8px;font-size:15px}
-.rm{width:28px;height:28px;margin-left:4px;border:none;background:none;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;border-radius:6px}
-.rm:hover{color:var(--rose)}
-td{border-bottom:1px solid var(--line);padding:6px 3px}
-td.sumc,th.sumh{position:sticky;right:0;background:var(--panel);min-width:62px;font-size:15px;font-weight:600;border-left:1px solid var(--line)}
-th.sumh{font-size:13px;color:var(--muted);font-weight:400}
-.cell{display:grid;place-items:center;width:28px;height:28px;margin:0 auto;border-radius:7px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:15px;cursor:pointer;padding:0}
-.cell:hover{border-color:var(--muted)}
+.corner{padding:8px 10px;font-size:12px;color:var(--muted)}
+.hname{min-width:200px;padding:6px 8px;border-bottom:1px solid var(--line)}
+.hname input{width:100%;background:transparent;border:none;padding:2px 0;font-size:15px;font-weight:600}
+.hname input:focus{background:var(--ink);border-radius:4px}
+.sub{font-size:12px;color:var(--muted);text-align:left}
+td{border-bottom:1px solid var(--line);padding:5px 2px}
+.sumc{position:sticky;right:0;background:var(--panel);min-width:72px;border-left:1px solid var(--line);font-weight:600;font-size:14px}
+.cell{display:block;width:26px;height:26px;margin:0 auto;border-radius:7px;border:1.5px solid var(--line);background:transparent;cursor:pointer;padding:0;color:var(--ink);font-weight:700}
+.cell.on{border-color:transparent}
 .cell.on::after{content:"✓"}
-.w0 .cell.on{background:var(--amber);border-color:var(--amber)}
-.w1 .cell.on{background:var(--teal);border-color:var(--teal)}
-.w2 .cell.on{background:var(--rose);border-color:var(--rose)}
-.w3 .cell.on{background:var(--sky);border-color:var(--sky)}
-tfoot td{font-size:13px;color:var(--muted);padding:8px 3px}
-tfoot .lbl{text-align:left;padding:8px 12px;position:sticky;left:0;background:var(--panel)}
-tfoot .pc{color:var(--text);font-weight:600}
-
-.chart{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
-.chart h2{margin:0 0 8px;font-size:15px;font-weight:600}
-.chart svg{width:100%;height:110px;display:block;overflow:visible}
-.chart .axis{stroke:var(--line);stroke-width:1}
-.chart .lab{fill:var(--muted);font-size:10px;font-family:Sarabun,sans-serif}
-.chart polyline{fill:none;stroke:var(--teal);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
-.chart .dot{fill:var(--teal)}
-
-.actions{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.btn{font:inherit;color:var(--ink);background:var(--amber);border:none;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer}
-.btn.ghost{background:none;color:var(--text);border:1px solid var(--line)}
-.hint{font-size:13px;color:var(--muted)}
-
-@media (max-width:560px){
-  .summary{grid-template-columns:1fr 1fr}
-  .stat.hero{grid-column:1/-1}
-  .stat strong{font-size:24px}
-  .hname{min-width:160px}
+.w0 .cell.on{background:var(--amber)}.w1 .cell.on{background:var(--teal)}.w2 .cell.on{background:var(--rose)}.w3 .cell.on{background:var(--sky)}
+.num{width:50px;text-align:center;background:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 2px;font-size:14px;color:var(--text)}
+.num.ok{border-color:var(--teal);color:var(--teal);font-weight:700}
+tfoot td{font-size:12px;color:var(--muted);padding:7px 2px}
+tfoot .lbl{text-align:left;padding:7px 10px;position:sticky;left:0;background:var(--panel)}
+.pc{color:var(--text);font-weight:600}
+.weeks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.wkbox{border:1px solid var(--line);border-radius:10px;padding:10px}
+.wkbox small{color:var(--muted);font-size:12px;display:block}
+.wkbox strong{font-size:20px}
+.years{display:flex;align-items:flex-end;gap:6px;height:130px}
+.years div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:11px;color:var(--muted)}
+.years i{display:block;width:100%;background:var(--amber);border-radius:4px 4px 0 0;min-height:2px}
+.years .cur i{background:var(--teal)}
+.years .fut i{background:var(--line)}
+.nrow{display:flex;align-items:center;gap:4px}
+.nrow input{flex:1;min-width:0}
+.tgl{background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;font-size:11px;padding:1px 6px;cursor:pointer}
+.tgt,.unt{background:var(--ink);border:1px solid var(--line);border-radius:4px;color:var(--text);font-size:12px;padding:1px 4px;margin:0 2px}
+.tgt{width:52px}.unt{width:64px}
+.rm{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 6px;line-height:1}
+.rm:hover{color:var(--rose)}
+.foot{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+@media (max-width:560px){.cards{grid-template-columns:1fr 1fr}.card.hero{grid-column:1/-1}}
+.arow{display:grid;grid-template-columns:150px 1fr 52px;gap:8px;align-items:center;font-size:14px;margin:7px 0}
+.an{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.abar{height:12px;background:var(--line);border-radius:3px;overflow:hidden}
+.abar i{display:block;height:100%;background:var(--amber)}
+.arow b{text-align:right}
+.cell.no{border-color:var(--rose)}
+.cell.no::after{content:"✕";color:var(--rose);font-weight:700}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.tbtns{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tbtns button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 10px;cursor:pointer;font:inherit;font-size:13px}
+.tbtns .yes.sel{background:var(--teal);border-color:var(--teal);color:var(--ink);font-weight:600}
+.tbtns .no.sel{background:var(--rose);border-color:var(--rose);color:var(--ink);font-weight:600}
+.addrow{background:none;border:1px dashed var(--muted);color:var(--text);border-radius:8px;padding:8px 14px;cursor:pointer;font:inherit;font-weight:600;position:sticky;left:12px}
+.bx{display:inline-flex;align-items:center;gap:6px;font-size:14px;cursor:pointer;margin-left:10px}
+.tbtns .box{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--line);background:transparent;padding:0;cursor:pointer;color:var(--ink);font-weight:700}
+.tbtns .box.yes.sel{background:var(--teal);border-color:var(--teal);color:var(--ink)}
+.tbtns .box.yes.sel::after{content:"✓"}
+.tbtns .box.no.sel{background:transparent;border-color:var(--rose);color:var(--rose)}
+.tbtns .box.no.sel::after{content:"✕"}
+.hname input{border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.nrow .tgt{flex:none;width:52px}.nrow .unt{flex:none;width:60px}
+.hname{min-width:230px}
+.nav span{font-size:18px}
+.wk{border-top:none;color:#fff;padding:8px 4px}
+.wk.c0{background:#7c5cf0}.wk.c1{background:#4f8ff7}.wk.c2{background:#27c4b6;color:#06222a}.wk.c3{background:#ee4f98}
+.w0 .cell.on{background:#9d7dff}.w1 .cell.on{background:#6aa9ff}.w2 .cell.on{background:#4fe3d3}.w3 .cell.on{background:#ff6aa8}
+.cell{width:24px;height:24px;border-radius:6px}
+td{padding:3px 2px}
+.hname{min-width:210px;padding:3px 6px}
+.hname input{font-size:14px;padding:3px 6px}
+.rings{display:flex;gap:8px;overflow-x:auto}
+.rd{flex:1;min-width:72px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px}
+.rd small{color:var(--muted)}
+.ring{width:62px;height:62px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center}
+.ring span{width:46px;height:46px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:13px;font-weight:700}
+#today{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 28px}
+.trow>span:first-child{white-space:nowrap}
+table{width:100%;min-width:700px;table-layout:fixed}
+.cell{width:100%;max-width:26px;min-width:14px;height:auto;aspect-ratio:1/1;border-radius:5px}
+.hname{width:150px;min-width:150px}
+.sumc{width:46px;min-width:46px}
+thead th{padding:4px 0}
+.dayh{font-size:10px}.dayh b{font-size:11px}
+td .num{width:100%;min-width:0;padding:2px 0;font-size:11px}
+tfoot td{font-size:11px}
+tfoot .lbl{width:150px;font-size:12px}
+.wk{font-size:12px}
+.corner{width:150px;min-width:150px}
+.nrow{min-width:0}.nrow input{min-width:0}
+.hname{overflow:hidden}
+.hname,.corner,tfoot .lbl{width:185px;min-width:185px}
+.nrow{flex-wrap:wrap}
+.nrow input[data-rename]{flex:1 1 90px}
+.nrow .tgt,.nrow .unt{order:5;margin-top:3px}
+.rm{padding:4px 8px}
+.rm.arm{background:var(--rose);color:#fff;border-radius:6px;font-size:12px;font-weight:700}
+@page{size:A4 landscape;margin:10mm}
+@media print{
+  :root{--ink:#fff;--panel:#fff;--line:#c9cfdf;--text:#111;--muted:#555}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;color:#111;padding:6mm}
+  .btn,.foot,.rm,.tgl,.addrow{display:none!important}
+  .wrap{overflow:visible}
+  .panel,.card,.wrap{break-inside:avoid}
+  .corner,.hname,.sumc{position:static!important}
+  table{min-width:0}
+  .panel:has(#rings){display:none}
+  .cards{margin-bottom:8px}
+  .panel{margin-top:8px}
 }
 </style>
 </head>
 <body>
 <main>
-  <header>
+  <div class="top">
     <h1>ติดตามเป้าหมาย</h1>
-    <select id="month" aria-label="เลือกเดือน"></select>
-  </header>
+    <div class="nav">
+      <button class="btn ghost" id="prev" aria-label="เดือนก่อน">‹</button>
+      <span id="mlabel"></span>
+      <button class="btn ghost" id="next" aria-label="เดือนถัดไป">›</button>
+    </div>
+  </div>
 
-  <section class="summary" aria-label="สรุป">
-    <div class="stat"><span>จำนวนเป้าหมาย</span><strong id="goalCount">0</strong></div>
-    <div class="stat"><span>วันที่ทำครบทุกข้อ</span><strong id="fullDays">0</strong></div>
-    <div class="stat hero"><span>ความคืบหน้าเดือนนี้</span><strong id="overall">0%</strong>
-      <div class="bar"><i id="overallBar"></i></div></div>
+  <section class="cards">
+    <div class="card"><small>จำนวนเป้าหมาย</small><strong id="tDone">0</strong></div>
+    <div class="card"><small>เป้าหมายที่สำเร็จ</small><strong id="tStreak">0</strong></div>
+    <div class="card hero"><small>ความคืบหน้าเดือนที่เลือก</small><strong id="mPct">0%</strong><div class="bar"><i id="mBar"></i></div></div>
   </section>
+
+  <section class="panel"><h2>รายวัน สัปดาห์นี้</h2><div class="rings" id="rings"></div></section>
 
   <div class="wrap">
     <table>
@@ -115,151 +171,304 @@ tfoot .pc{color:var(--text);font-weight:600}
     </table>
   </div>
 
-  <section class="chart">
-    <h2>ความคืบหน้ารายวัน</h2>
-    <svg id="chart" viewBox="0 0 320 110" preserveAspectRatio="none" role="img" aria-label="กราฟความคืบหน้ารายวัน"></svg>
+
+  <section class="panel">
+    <h2>สรุปรายสัปดาห์</h2>
+    <div class="weeks" id="weeks"></div>
+    <h2 style="margin-top:18px">วิเคราะห์เป้าหมาย</h2>
+    <div id="analysis"></div>
   </section>
 
-  <div class="actions">
-    <button class="btn" id="add">+ เพิ่มเป้าหมาย</button>
-    <span class="hint">แตะช่องเพื่อทำเครื่องหมาย ข้อมูลถูกบันทึกในเบราว์เซอร์นี้</span>
-  </div>
+  <section class="panel">
+    <h2>ความคืบหน้ารายวัน</h2>
+    <svg id="chart" viewBox="0 0 640 170" style="width:100%;height:auto;display:block" role="img" aria-label="กราฟความคืบหน้ารายวัน"></svg>
+  </section>
+
+  <section class="panel">
+    <h2>ภาพรวมทั้งปี</h2>
+    <div class="years" id="years"></div>
+  </section>
+
+  
 </main>
 
 <script>
-const TH_MONTHS=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
-const TH_DAYS=["อา","จ","อ","พ","พฤ","ศ","ส"];
-const DEFAULT_HABITS=["ตื่นเช้า","วางแผนประจำวัน","ออกกำลังกาย","ทำรายรับรายจ่าย","กินข้าวไม่ดูทรศ","เรียนรู้สิ่งใหม่ๆ","อ่านหนังสือ","ทำโปรเจค","งดแอลกอฮอล์","ดื่มน้ำ 2 ลิตร"];
-const YEAR=2026, KEY="goal-tracker-v1";
+const TH_M=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const TH_D=["อา","จ","อ","พ","พฤ","ศ","ส"];
+const KEY="goal-tracker-v2";
+const DEF=[
+  {id:"h1",name:"ตื่นเช้า",type:"check"},
+  {id:"h2",name:"วางแผนประจำวัน",type:"check"},
+  {id:"h3",name:"ออกกำลังกาย",type:"check"},
+  {id:"h4",name:"ทำรายรับรายจ่าย",type:"check"},
+  {id:"h5",name:"กินข้าวไม่ดูทรศ",type:"check"},
+  {id:"h6",name:"เรียนรู้สิ่งใหม่ๆ",type:"check"},
+  {id:"h7",name:"อ่านหนังสือ",type:"check"},
+  {id:"h8",name:"ทำโปรเจค",type:"check"},
+  {id:"h9",name:"งดแอลกอฮอล์",type:"check"},
+  {id:"h10",name:"ดื่มน้ำ",type:"num",target:2,unit:"ลิตร"}
+];
 
-let state=null;
-try{ state=JSON.parse(localStorage.getItem(KEY)); }catch(e){}
-if(!state||!Array.isArray(state.habits)||typeof state.checks!=="object"){
-  state={month:new Date().getMonth(),habits:DEFAULT_HABITS.slice(),checks:{}};
+let S=null;
+try{S=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+if(!S||!Array.isArray(S.habits)){
+  S={habits:DEF.map(h=>Object.assign({},h)),days:{}};
+  try{
+    const old=JSON.parse(localStorage.getItem("goal-tracker-v1"));
+    if(old&&Array.isArray(old.habits)){
+      S.habits=old.habits.map((n,i)=>({id:"o"+i,name:n,type:"check"}));
+      for(const k in (old.checks||{})){
+        const p=k.split("-").map(Number);
+        if(old.checks[k]&&S.habits[p[1]]){
+          const ds="2026-"+String(p[0]+1).padStart(2,"0")+"-"+String(p[2]).padStart(2,"0");
+          (S.days[ds]=S.days[ds]||{})["o"+p[1]]=1;
+        }
+      }
+      save();
+    }
+  }catch(e){}
 }
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+if(!S.days) S.days={};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 
 const $=s=>document.querySelector(s);
-const daysIn=m=>new Date(YEAR,m+1,0).getDate();
-const weekdayOf=(m,d)=>new Date(YEAR,m,d).getDay();
-const pct=(a,b)=>b?Math.round(a/b*100):0;
-const esc=s=>String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-const key=(i,d)=>state.month+"-"+i+"-"+d;
-const isOn=(i,d)=>!!state.checks[key(i,d)];
+const pad=n=>String(n).padStart(2,"0");
+const iso=(y,m,d)=>y+"-"+pad(m+1)+"-"+pad(d);
+const dim=(y,m)=>new Date(y,m+1,0).getDate();
+const wd=(y,m,d)=>new Date(y,m,d).getDay();
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const now=new Date();
+const TODAY=iso(now.getFullYear(),now.getMonth(),now.getDate());
+let V={y:now.getFullYear(),m:now.getMonth()};
+let pendingDel=null,delTimer=null;
 
-function buildMonthSelect(){
-  $("#month").innerHTML=TH_MONTHS.map((n,i)=>`<option value="${i}">${n} ${YEAR}</option>`).join("");
+const val=(ds,hid)=>(S.days[ds]||{})[hid];
+function isDone(h,v){
+  if(v===undefined||v===null||v==="") return false;
+  return h.type==="num" ? Number(v)>=Number(h.target||0) : v===1;
+}
+function setVal(ds,hid,v){
+  if(!S.days[ds]) S.days[ds]={};
+  if(v===undefined||v===null||v==="") delete S.days[ds][hid]; else S.days[ds][hid]=v;
+  if(!Object.keys(S.days[ds]).length) delete S.days[ds];
+}
+function elapsedOf(y,m){
+  const ty=now.getFullYear(), tm=now.getMonth();
+  if(y<ty||(y===ty&&m<tm)) return dim(y,m);
+  if(y===ty&&m===tm) return now.getDate();
+  return 0;
+}
+function ago(o){const x=new Date(now.getFullYear(),now.getMonth(),now.getDate()-o);return iso(x.getFullYear(),x.getMonth(),x.getDate());}
+function streakBy(fn){
+  let o=fn(0)?0:1, k=0;
+  while(o<1000&&fn(o)){k++;o++;}
+  return k;
+}
+function habitStreak(h){return streakBy(o=>isDone(h,val(ago(o),h.id)));}
+function allStreak(){
+  if(!S.habits.length) return 0;
+  return streakBy(o=>S.habits.every(h=>isDone(h,val(ago(o),h.id))));
+}
+function doneCount(y,m,h,el){
+  let c=0; for(let d=1;d<=el;d++) if(isDone(h,val(iso(y,m,d),h.id))) c++; return c;
+}
+function monthPct(y,m){
+  const el=elapsedOf(y,m), H=S.habits;
+  if(!el||!H.length) return null;
+  let c=0; H.forEach(h=>c+=doneCount(y,m,h,el));
+  return Math.round(c/(H.length*el)*100);
 }
 
 function render(){
-  const m=state.month, n=daysIn(m), H=state.habits, off=weekdayOf(m,1);
-  $("#month").value=m;
+  const y=V.y, m=V.m, n=dim(y,m), H=S.habits, el=elapsedOf(y,m), off=wd(y,m,1);
+  $("#mlabel").textContent=TH_M[m]+" "+y;
 
-  // weeks (Sunday-start calendar weeks)
+  // week grouping (Sunday-start)
   const weeks=[];
-  for(let d=1;d<=n;d++){ const w=Math.floor((d-1+off)/7); (weeks[w]=weeks[w]||[]).push(d); }
+  for(let d=1;d<=n;d++){const w=Math.floor((d-1+off)/7);(weeks[w]=weeks[w]||[]).push(d);}
 
-  let h1=`<tr><th class="corner" rowspan="2">เป้าหมาย</th>`;
-  weeks.forEach((ds,w)=>{ h1+=`<th colspan="${ds.length}" class="wk c${w%4}">สัปดาห์ที่ ${w+1}</th>`; });
-  h1+=`<th class="sumh" rowspan="2">รวม</th></tr>`;
-  let h2="<tr>";
-  for(let d=1;d<=n;d++) h2+=`<th class="dayh">${TH_DAYS[weekdayOf(m,d)]}<b>${d}</b></th>`;
-  h2+="</tr>";
+  let h1='<tr><th class="corner" rowspan="2">เป้าหมาย <button class="btn" data-add style="padding:4px 10px;margin-left:6px">+ เพิ่ม</button></th>';
+  weeks.forEach((ds,w)=>{h1+=`<th colspan="${ds.length}" class="wk c${w%4}">สัปดาห์ที่ ${w+1}</th>`;});
+  h1+='<th class="sumc" rowspan="2" style="position:sticky;right:0;background:var(--panel)">รวม</th></tr>';
+  let h2='<tr>';
+  for(let d=1;d<=n;d++){
+    const ds=iso(y,m,d);
+    h2+=`<th class="dayh${ds===TODAY?" today":""}">${TH_D[wd(y,m,d)]}<b>${d}</b></th>`;
+  }
+  h2+='</tr>';
   $("#thead").innerHTML=h1+h2;
 
-  // habit rows
   let body="";
-  H.forEach((name,i)=>{
-    let row=`<tr><th class="hname"><input aria-label="ชื่อเป้าหมาย" value="${esc(name)}" data-i="${i}"><button class="rm" data-rm="${i}" aria-label="ลบ ${esc(name)}">×</button></th>`;
-    let done=0;
+  H.forEach(h=>{
+    const sk=habitStreak(h);
+    const nm=`<div class="nrow"><input value="${esc(h.name)}" data-rename="${h.id}" aria-label="ชื่อเป้าหมาย">`
+      +(h.type==="num"?`<input class="tgt" type="number" min="0" step="any" value="${esc(h.target)}" data-target="${h.id}" aria-label="ค่าเป้าหมาย"><input class="unt" value="${esc(h.unit||"")}" placeholder="หน่วย" data-unit="${h.id}" aria-label="หน่วย">`:"")
+      +`<button class="tgl" data-tgl="${h.id}" title="สลับประเภท ติ๊ก/ตัวเลข">${h.type==="num"?"123":"✓"}</button><button class="rm${pendingDel===h.id?" arm":""}" data-del="${h.id}" aria-label="ลบ ${esc(h.name)}">${pendingDel===h.id?"ลบ?":"×"}</button></div>`;
+    let row=`<tr><th class="hname">${nm}</th>`;
     for(let d=1;d<=n;d++){
-      const w=Math.floor((d-1+off)/7)%4, on=isOn(i,d); if(on) done++;
-      row+=`<td class="w${w}"><button class="cell${on?" on":""}" data-i="${i}" data-d="${d}" aria-pressed="${on}" aria-label="${esc(name)} วันที่ ${d}"></button></td>`;
+      const ds=iso(y,m,d), v=val(ds,h.id), w=Math.floor((d-1+off)/7)%4;
+      const ok=isDone(h,v);
+      if(h.type==="num"){
+        row+=`<td class="w${w}"><input class="num${ok?" ok":""}" type="number" inputmode="decimal" min="0" step="any" value="${v===undefined?"":v}" data-num="${h.id}" data-ds="${ds}" aria-label="${esc(h.name)} วันที่ ${d}"></td>`;
+      }else{
+        row+=`<td class="w${w}"><button class="cell${ok?" on":""}${v===0?" no":""}" data-toggle="${h.id}" data-ds="${ds}" aria-pressed="${ok}" aria-label="${esc(h.name)} วันที่ ${d}"></button></td>`;
+      }
     }
-    row+=`<td class="sumc">${pct(done,n)}%</td></tr>`;
+    const c=doneCount(y,m,h,el);
+    row+=`<td class="sumc">${el?Math.round(c/el*100)+"%":"-"}${sk>1?'<div class="sub" style="text-align:center">🔥'+sk+'</div>':""}</td></tr>`;
     body+=row;
   });
-  if(!H.length) body=`<tr><td colspan="${n+2}" style="padding:20px;color:var(--muted);text-align:left">ยังไม่มีเป้าหมาย กดเพิ่มเป้าหมายด้านล่างเพื่อเริ่ม</td></tr>`;
+  if(!H.length) body=`<tr><td colspan="${n+2}" style="padding:20px;text-align:left;color:var(--muted)">ยังไม่มีเป้าหมาย เพิ่มได้ที่ด้านล่าง</td></tr>`;
+  body+=`<tr><td colspan="${n+2}" style="text-align:left;padding:10px 12px"><button class="addrow" data-add>+ เพิ่มเป้าหมาย</button></td></tr>`;
   $("#tbody").innerHTML=body;
 
-  // per-day totals
-  const dayDone=[];
-  let foot=`<tr><td class="lbl">ทำได้ต่อวัน</td>`;
-  for(let d=1;d<=n;d++){
-    const c=H.reduce((a,_,i)=>a+(isOn(i,d)?1:0),0);
-    dayDone[d]=c;
-    const w=Math.floor((d-1+off)/7)%4;
-    foot+=`<td class="w${w}"><span class="pc">${pct(c,H.length)}</span></td>`;
-  }
-  foot+=`<td class="sumc"></td></tr>`;
-  $("#tfoot").innerHTML=foot;
+  const rowOf=(label,fn)=>{let r=`<tr><td class="lbl">${label}</td>`;for(let d=1;d<=n;d++){const ds=iso(y,m,d),w=Math.floor((d-1+off)/7)%4;r+=`<td class="w${w}">${fn(ds,d)}</td>`;}return r+'<td class="sumc"></td></tr>';};
+  const doneOn=ds=>H.filter(h=>isDone(h,val(ds,h.id))).length;
+  $("#tfoot").innerHTML="";
 
-  // summary
-  const total=H.length*n;
-  let doneAll=0, fullDays=0;
-  for(let d=1;d<=n;d++){ doneAll+=dayDone[d]; if(H.length&&dayDone[d]===H.length) fullDays++; }
-  const overall=pct(doneAll,total);
-  $("#goalCount").textContent=H.length;
-  $("#fullDays").textContent=fullDays;
-  $("#overall").textContent=overall+"%";
-  $("#overallBar").style.width=overall+"%";
 
-  // chart
-  const W=320,Hh=110,pad=8;
-  let pts=[];
-  for(let d=1;d<=n;d++){
-    const x=pad+(d-1)/Math.max(n-1,1)*(W-pad*2);
-    const y=Hh-pad-(pct(dayDone[d],H.length)/100)*(Hh-pad*2);
-    pts.push([x,y]);
+  // cards
+  const td=H.filter(h=>isDone(h,val(TODAY,h.id))).length;
+  $("#tDone").textContent=H.length;
+  $("#tStreak").textContent=H.reduce((a,h)=>a+doneCount(y,m,h,el),0);
+  const mp=monthPct(y,m);
+  $("#mPct").textContent=(mp==null?"-":mp+"%");
+  $("#mBar").style.width=(mp||0)+"%";
+
+  const wi=(y===now.getFullYear()&&m===now.getMonth())?Math.floor((now.getDate()-1+off)/7):0;
+  const wcol=["#9d7dff","#6aa9ff","#4fe3d3","#ff6aa8"][wi%4];
+  $("#rings").innerHTML=(weeks[wi]||[]).map(d=>{
+    const ds=iso(y,m,d);
+    const p=(d<=el&&H.length)?Math.round(H.filter(h=>isDone(h,val(ds,h.id))).length/H.length*100):0;
+    return `<div class="rd"><b>${TH_D[wd(y,m,d)]}</b><small>${d}/${m+1}</small><div class="ring" style="--p:${p};--c:${wcol}"><span>${p}%</span></div></div>`;
+  }).join("");
+
+  // weekly summary
+  let wh="";
+  weeks.forEach((ds,w)=>{
+    const inEl=ds.filter(d=>d<=el);
+    let c=0; H.forEach(h=>inEl.forEach(d=>{if(isDone(h,val(iso(y,m,d),h.id)))c++;}));
+    const slots=H.length*inEl.length;
+    const p=slots?Math.round(c/slots*100)+"%":"-";
+    wh+=`<div class="wkbox"><small>สัปดาห์ที่ ${w+1}</small><strong>${p}</strong></div>`;
+  });
+  $("#weeks").innerHTML=wh;
+
+  let an="";
+  if(el&&H.length){
+    const rates=H.map(h=>({name:h.name,p:Math.round(doneCount(y,m,h,el)/el*100)})).sort((a,b)=>b.p-a.p);
+    an=rates.map(r=>`<div class="arow"><span class="an">${esc(r.name)}</span><div class="abar"><i style="width:${r.p}%"></i></div><b>${r.p}%</b></div>`).join("");
+  }else an='<p style="color:var(--muted);margin:0">เลือกเดือนที่มีข้อมูลเพื่อดูการวิเคราะห์</p>';
+  $("#analysis").innerHTML=an;
+
+  // yearly overview
+  let yh="";
+  for(let mm=0;mm<12;mm++){
+    const p=monthPct(y,mm);
+    const cls=(mm===m?"cur":"")+(elapsedOf(y,mm)===0?" fut":"");
+    yh+=`<div class="${cls.trim()}" title="${TH_M[mm]}"><i style="height:${p==null?2:Math.max(p,2)}%"></i>${mm+1}</div>`;
   }
-  const grid=[0,50,100].map(v=>{const y=Hh-pad-(v/100)*(Hh-pad*2);
-    return `<line class="axis" x1="0" x2="${W}" y1="${y}" y2="${y}"/><text class="lab" x="2" y="${y-2}">${v}%</text>`;}).join("");
-  $("#chart").innerHTML=grid+`<polyline points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" ")}"/>`;
+  $("#years").innerHTML=yh;
+  const W=640,Hh=170,pd=12; const pts=[];
+  for(let d=1;d<=el;d++){
+    const p=H.length?doneOn(iso(y,m,d))/H.length:0;
+    const x=pd+(d-1)/Math.max(n-1,1)*(W-pd*2), yy=Hh-pd-p*(Hh-pd*2);
+    pts.push(x.toFixed(1)+","+yy.toFixed(1));
+  }
+  $("#chart").innerHTML=[0,25,50,75,100].map(v=>{const yy=Hh-pd-(v/100)*(Hh-pd*2);return `<line x1="0" x2="${W}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="4" y="${yy-3}" font-size="12" fill="var(--muted)">${v}%</text>`;}).join("")
+    +(pts.length?`<polygon points="${pts[0].split(",")[0]},${Hh-pd} ${pts.join(" ")} ${pts[pts.length-1].split(",")[0]},${Hh-pd}" fill="var(--teal)" fill-opacity=".35"/><polyline points="${pts.join(" ")}" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linejoin="round"/>`:"");
+
 }
 
-// toggle a check
-$("#tbody").addEventListener("click",e=>{
-  const rm=e.target.closest(".rm");
-  if(rm){
-    const r=+rm.dataset.rm;
-    state.habits.splice(r,1);
-    const next={};
-    for(const k in state.checks){
-      const [mo,i,d]=k.split("-").map(Number);
-      if(mo!==state.month){ next[k]=state.checks[k]; continue; }
-      if(i===r) continue;
-      next[mo+"-"+(i>r?i-1:i)+"-"+d]=state.checks[k];
-    }
-    state.checks=next; save(); render(); return;
+function changeMonth(delta){
+  let m=V.m+delta, y=V.y;
+  if(m<0){m=11;y--;} if(m>11){m=0;y++;}
+  V={y:y,m:m}; render();
+}
+
+document.addEventListener("click",e=>{
+  const t=e.target;
+  const tog=t.closest("[data-toggle]");
+  if(tog){
+    const id=tog.dataset.toggle, ds=tog.dataset.ds, v=val(ds,id);
+    setVal(ds,id,v===undefined?1:(v===1?0:undefined)); save(); render(); return;
   }
-  const c=e.target.closest(".cell");
-  if(!c) return;
-  const i=+c.dataset.i, d=+c.dataset.d, k=key(i,d);
-  if(state.checks[k]) delete state.checks[k]; else state.checks[k]=true;
-  save(); render();
-  const again=document.querySelector(`.cell[data-i="${i}"][data-d="${d}"]`);
-  if(again) again.focus();
+  const del=t.closest("[data-del]");
+  if(del){
+    const id=del.dataset.del;
+    if(pendingDel!==id){pendingDel=id;clearTimeout(delTimer);delTimer=setTimeout(()=>{pendingDel=null;render();},3000);render();return;}
+    pendingDel=null;
+    S.habits=S.habits.filter(h=>h.id!==id);
+    Object.keys(S.days).forEach(ds=>{delete S.days[ds][id]; if(!Object.keys(S.days[ds]).length) delete S.days[ds];});
+    save(); render(); return;
+  }
+  const tg=t.closest("[data-tgl]");
+  if(tg){
+    const h=S.habits.find(x=>x.id===tg.dataset.tgl); if(!h) return;
+    h.type=h.type==="num"?"check":"num";
+    if(h.type==="num"&&!h.target) h.target=1;
+    save(); render(); return;
+  }
+  const yes=t.closest("[data-yes]"), no=t.closest("[data-no]");
+  if(yes||no){
+    const btn=yes||no, id=yes?yes.dataset.yes:no.dataset.no, want=yes?1:0;
+    setVal(TODAY,id,val(TODAY,id)===want?undefined:want);
+    save(); render(); return;
+  }
+  if(t.closest("#prev")) return changeMonth(-1);
+  if(t.closest("#next")) return changeMonth(1);
+  if(t.closest("[data-add]")){
+    S.habits.push({id:"h"+Date.now(),name:"เป้าหมายใหม่",type:"check"});
+    save(); render();
+    const inputs=document.querySelectorAll("[data-rename]");
+    if(inputs.length) inputs[inputs.length-1].select();
+    return;
+  }
+  if(t.closest("#pdfBtn")){document.title="เป้าหมาย "+TH_M[V.m]+" "+V.y;window.print();return;}
+  if(t.closest("#exportBtn")) return exportCSV();
 });
 
-// rename a habit (no re-render so typing keeps focus)
-$("#tbody").addEventListener("change",e=>{
-  const inp=e.target.closest("input");
-  if(!inp) return;
-  state.habits[+inp.dataset.i]=inp.value.trim()||"เป้าหมายใหม่";
-  save();
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.mood){
+    setVal(t.dataset.mood,"_mood",t.value===""?undefined:Math.min(10,Math.max(0,Number(t.value))));
+    save(); render(); return;
+  }
+  if(t.dataset.num){
+    setVal(t.dataset.ds,t.dataset.num,t.value===""?undefined:Number(t.value));
+    save(); render(); return;
+  }
+  if(t.dataset.rename){
+    const h=S.habits.find(x=>x.id===t.dataset.rename); if(!h) return;
+    h.name=t.value.trim()||"เป้าหมาย"; save(); render(); return;
+  }
+  if(t.dataset.target){
+    const h=S.habits.find(x=>x.id===t.dataset.target); if(!h) return;
+    h.target=Number(t.value)||0; save(); render(); return;
+  }
+  if(t.dataset.unit){
+    const h=S.habits.find(x=>x.id===t.dataset.unit); if(!h) return;
+    h.unit=t.value.trim(); save(); render(); return;
+  }
 });
 
-$("#add").addEventListener("click",()=>{
-  state.habits.push("เป้าหมายใหม่"); save(); render();
-  const inputs=document.querySelectorAll(".hname input");
-  if(inputs.length) inputs[inputs.length-1].select();
-});
+function exportCSV(){
+  const rows=[["วันที่","เป้าหมาย","ค่า","สำเร็จ"]];
+  Object.keys(S.days).sort().forEach(ds=>{
+    S.habits.forEach(h=>{
+      const v=val(ds,h.id);
+      if(v!==undefined) rows.push([ds,h.name,v,isDone(h,v)?"ใช่":"ไม่"]);
+    });
+  });
+  Object.keys(S.days).forEach(ds=>{const mv=val(ds,"_mood");if(mv!==undefined)rows.push([ds,"สภาพจิตใจ",mv,""]);});
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="goal-tracker-"+TODAY+".csv";
+  document.body.appendChild(a); a.click(); a.remove();
+}
 
-$("#month").addEventListener("change",e=>{
-  state.month=+e.target.value; save(); render();
-});
-
-buildMonthSelect();
 render();
 </script>
 </body>
